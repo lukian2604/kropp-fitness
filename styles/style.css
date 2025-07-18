@@ -33,6 +33,8 @@
   --font-family-base: "Heebo", sans-serif;
   --font-family-accent: "Yantramanav", sans-serif;
 
+  --input-height: 54px;
+
   --container-width: 1300px;
   --container-padding-x: 15px;
 
@@ -60,8 +62,9 @@ svg * {
 }
 
 .container {
-  max-width: calc(var(--container-width)) + var(--container-padding-x) * 2;
-  margin-inline: var(--container-padding-x);
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
 }
 
 .visually-hidden {
@@ -86,6 +89,7 @@ svg * {
   font-size: 12px;
   align-items: center;
   font-weight: 700;
+  text-decoration: none;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   background-color: var(--color-light);
@@ -94,6 +98,31 @@ svg * {
 }
 
 .button:hover {
+  background-color: var(--color-light-gray);
+}
+
+.button.transparent {
+  position: relative;
+  height: var(--input-height);
+  padding-left: 31px;
+  padding-right: 80px;
+  background-color: transparent;
+  border: var(--border);
+}
+
+.button.transparent::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  right: 0;
+  aspect-ratio: 1;
+  background: url(./icons/arrow-top-right.svg) center/70% no-repeat;
+  border: var(--border);
+  border-radius: 50%;
+}
+
+.button.transparent:hover {
+  color: var(--color-dark);
   background-color: var(--color-light-gray);
 }
 
@@ -107,12 +136,53 @@ h6 {
   text-transform: uppercase;
 }
 
+.title-medium {
+  font-size: clamp(20px, 2.08vw, 40px);
+  line-height: 1.3;
+  color: var(--color-light);
+}
+
+.backdrop-title {
+  position: relative;
+  z-index: 2;
+}
+
+.backdrop-title::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 40px;
+  right: calc(100% + 8px);
+  aspect-ratio: 1;
+  background: url(./icons/plus.svg) center/contain no-repeat;
+}
+
+.backdrop-title::after {
+  content: attr(data-title);
+  position: absolute;
+  top: -0.4em;
+  left: -0.77em;
+  font-family: var(--font-family-accent);
+  font-size: 2.8em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-dark-gray);
+  text-stroke: 1px var(--color-dark-gray);
+}
+
 a {
   color: var(--color-light);
 }
 
 a:hover {
   color: var(--color-light-gray);
+}
+
+p {
+  margin-block: 0;
+}
+
+p:not([class]):not(:last-child) {
+  margin-bottom: 24px;
 }
 
 .header {
@@ -194,7 +264,8 @@ a:hover {
   flex-direction: column;
   justify-content: end;
   min-height: calc(100vh - var(--header-height));
-  padding-inline: 36px 70px;
+  padding-block: 36px;
+  padding-inline: 70px;
   color: var(--color-light);
   background-color: var(--color-dark-alternate);
 }
@@ -213,15 +284,14 @@ a:hover {
 
 .banner-info::before {
   content: "";
-  width: min(10.1vw, 194px);
+  width: clamp(60px, 10.1vw, 194px);
   aspect-ratio: 1;
-  background: url("./icons/bold-arrow-down-right.svg") center/contain no-repeat;
   margin-right: 30px;
+  background: url("./icons/bold-arrow-down-right.svg") center/contain no-repeat;
 }
 
 .banner-title {
-  font-size: min(18.75vw, 360px);
-  font-weight: 700;
+  font-size: min(18vw, 360px);
   line-height: 1;
 }
 
@@ -260,6 +330,51 @@ a:hover {
   border-color: var(--color-light-gray);
 }
 
+.motivation-item:nth-child(even) {
+  background-color: var(--color-dark-alternate);
+}
+
+.motivation-item:nth-child(even) .motivation-card {
+  flex-direction: row-reverse;
+}
+
+.motivation-card {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  column-gap: clamp(30px, 10.42vw, 200px);
+}
+
+.motivation-card-image {
+  margin-block: -60px;
+}
+
+.motivation-card-image:nth-child(even) {
+  margin-bottom: 0;
+}
+
+.motivation-card-body {
+  padding-left: 35px;
+}
+
+.motivation-card-title:not(:last-child) {
+  margin-bottom: 14px;
+}
+
+.motivation-card-description {
+  max-width: 400px;
+}
+
+.motivation-card-description:not(:last-child) {
+  margin-bottom: 37px;
+}
+
+@media (max-width: 1919px) {
+  .motivation-card-image {
+    margin-block: -20px;
+  }
+}
+
 @media (max-width: 1024px) {
   .header {
     flex-wrap: wrap;
@@ -283,6 +398,16 @@ a:hover {
 
   .banner {
     row-gap: 10px;
+  }
+
+  .motivation-card {
+    padding-block: 50px;
+  }
+
+  .motivation-card-image {
+    max-width: 30%;
+    height: auto;
+    margin-block: 0;
   }
 }
 
@@ -312,5 +437,23 @@ a:hover {
 
   .banner-info::before {
     margin-right: 10px;
+  }
+
+  .motivation-card,
+  .motivation-item:nth-child(even) .motivation-card {
+    flex-direction: column-reverse;
+  }
+
+  .motivation-card-description:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .motivation-card {
+    row-gap: 30px;
+    padding-block: 30px;
+  }
+
+  .motivation-card-image {
+    max-width: 60%;
   }
 }
